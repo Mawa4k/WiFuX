@@ -129,10 +129,10 @@ wifux fix
 
 If the issue persists, use the dedicated fix script:
 ```bash
-curl -sO https://raw.githubusercontent.com/msrofficial/fix-termux-root/main/fix.sh && chmod +x fix.sh && ./fix.sh
+curl -sO https://raw.githubusercontent.com/Mawa4k/WiFuX/main/fix.sh && chmod +x fix.sh && ./fix.sh
 ```
 
-Manual solutions: [github.com/msrofficial/fix-termux-root](https://github.com/msrofficial/fix-termux-root)
+Manual solutions: [github.com/Mawa4k/WiFuX](https://github.com/Mawa4k/WiFuX)
 
 ---
 
