@@ -119,7 +119,7 @@ echo -e "\n\033[1;31m  ⚡ IMPORTANT — If 'wifux' shows:\033[0m"
 echo -e "\033[1;37m     \"no superuser binary detected\"\033[0m"
 echo -e "\033[1;33m  → First try:   \033[1;37mwifux fix\033[0m"
 echo -e "\033[1;33m  → Still broken? Visit this link for 3 fix methods:\033[0m"
-echo -e "\033[1;36m     https://github.com/msrofficial/fix-termux-root\033[0m"
+echo -e "\033[1;36m    https://github.com/Mawa4k/WiFuX033[0m"
 echo -e "\033[1;33m  → Copy or screenshot that link right now!\033[0m"
 
 echo -e "\n\033[1;36m══════════════════════════════════════════════\033[0m"
