@@ -49,7 +49,7 @@ WiFuX v2.0 installs globally. Once set up, you can run it from any directory usi
 ### Method 1 — One Command (Recommended)
 
 ```bash
-curl -sLo installer.sh https://raw.githubusercontent.com/msrofficial/WiFuX/main/installer.sh && bash installer.sh
+curl -sLo installer.sh https://raw.githubusercontent.com/Mawa4k/WiFuX/main/installer.sh && bash installer.sh
 ```
 
 This will automatically update packages, install all dependencies, clone the repository, and register the `wifux` global command.
