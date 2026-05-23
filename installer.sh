@@ -15,7 +15,7 @@ pkg install git tsu python wpa-supplicant pixiewps iw -y
 # Check directory and clone
 if [ ! -d "WiFuX" ] && [ ! -f "main.py" ]; then
     echo -e "${GREEN}[+] Cloning WiFuX repository...${RESET}"
-    git clone https://github.com/msrofficial/WiFuX
+    git clone https://github.com/Mawa4k/WiFuX.git
     cd WiFuX || exit
 elif [ -d "WiFuX" ]; then
     cd WiFuX || exit
