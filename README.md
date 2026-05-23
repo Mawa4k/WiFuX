@@ -11,10 +11,10 @@
 
 **WiFuX v2.0** — WPS Security Auditing Tool for Android / Termux
 
-[![Version](https://img.shields.io/badge/version-2.0-brightgreen)](https://github.com/msrofficial/WiFuX/releases)
+[![Version](https://img.shields.io/badge/version-2.0-brightgreen)](https://github.com/Mawa4k/WiFuX.git)
 [![Platform](https://img.shields.io/badge/platform-Android%20%2F%20Termux-blue)](https://termux.dev)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
-[![Visitors](https://visitor-badge.laobi.icu/badge?page_id=msrofficial.wifux)](https://github.com/msrofficial/WiFuX)
+[![Visitors](https://visitor-badge.laobi.icu/badge?page_id=msrofficial.wifux)](https://github.com/Mawa4k/WiFuX.git)
 
 </div>
 
@@ -59,7 +59,7 @@ This will automatically update packages, install all dependencies, clone the rep
 ```bash
 pkg update && pkg upgrade -y
 pkg install root-repo git tsu python wpa-supplicant pixiewps iw -y
-git clone https://github.com/msrofficial/WiFuX
+git clone https://github.com/Mawa4k/WiFuX.git
 cd WiFuX
 chmod +x install.sh
 bash install.sh
@@ -170,17 +170,17 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) for detai
 
 ## Author
 
-**MD Sakibur Rahman (MSR)**
+**MD MAWA Rahman (MSR)**
 
 | Platform | Link |
 |---|---|
-| GitHub | [msrofficial](https://github.com/msrofficial) |
-| Facebook | [sakibur.msr](https://facebook.com/sakibur.msr) |
-| Instagram | [msr.sakibur](https://instagram.com/msr.sakibur) |
-| Telegram | [@msrofficial](https://t.me/msrofficial) |
-| Website | [msrsakibur.pro.bd](https://msrsakibur.pro.bd) |
+| GitHub | [davil4k](https://github.com/Mawa4k/) |
+| Facebook | [mawa.davil4k](https://www.facebook.com/mawa4k) |
+| Instagram | [mawa](https://www.instagram.com/mawaislam1234/) |
+| Telegram | [@mawa4k](https://t.me/mawa4k) |
+| Website | [mawa.pro.bd](https://msrmawa.pro.bd) |
 
-Honorable mentions include: rofl0r, Rayhan, Alamin, Sojib, Sanji, Mustakin, Sakib, rizzi
+Honorable mentions include: mawa
 
 ---
 
