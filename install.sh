@@ -24,11 +24,8 @@ cd "$SCRIPT_DIR" || exit
 # লুপ ট্রিক: পাইথন পুরোপুরি চালু হওয়ার পর আপনার ব্যানারটি ওভাররাইট করবে
 show_my_banner() {
     local pid=\$1
-    # যতক্ষণ ব্যাকগ্রাউন্ডে পাইথন প্রসেসটি সচল থাকবে
     while kill -0 \$pid 2>/dev/null; do
-        # পাইথন লোড হওয়া এবং তার নিজস্ব ব্যানার প্রিন্ট করার জন্য পর্যাপ্ত সময় (২ সেকেন্ড) অপেক্ষা করবে
         sleep 2.0
-        
         clear
         echo -e "\033[1;32m _    _  _____ ______ _    _ __   __"
         echo -e "| |  | ||_   _|  ____| |  | |\ \ / /"
@@ -88,7 +85,7 @@ fi
 
 # Menu Logic
 if [ "\$1" == "menu" ]; then
-    sudo python main.py &
+    tsu -c "python main.py" &
     PY_PID=\$!
     show_my_banner \$PY_PID
     wait \$PY_PID
@@ -97,7 +94,7 @@ fi
 
 # Old Logic
 if [ "\$1" == "old" ]; then
-    sudo python w1.py -i wlan0 -K &
+    tsu -c "python w1.py -i wlan0 -K" &
     PY_PID=\$!
     show_my_banner \$PY_PID
     wait \$PY_PID
@@ -106,12 +103,12 @@ fi
 
 # Run Logic
 if [ -z "\$1" ]; then
-    sudo python main.py -i wlan0 -K &
+    tsu -c "python main.py -i wlan0 -K" &
     PY_PID=\$!
     show_my_banner \$PY_PID
     wait \$PY_PID
 else
-    sudo python main.py "\$@" &
+    tsu -c "python main.py \$*" &
     PY_PID=\$!
     show_my_banner \$PY_PID
     wait \$PY_PID
@@ -136,15 +133,6 @@ echo -e "\033[1;32m  │\033[0m  \033[1;37mwifux fix\033[0m     → Fix root/sup
 echo -e "\033[1;32m  │\033[0m  \033[1;37mwifux contact\033[0m → Contact the developer (Mawa)"
 echo -e "\033[1;32m  │\033[0m  \033[1;37mwifux menu\033[0m    → Run WiFuX interactive menu"
 echo -e "\033[1;32m  │\033[0m  \033[1;37mwifux old\033[0m     → Run WiFuX old engine (w1.py)"
-echo -e "\033[1;32m  └───────────────────────────────────────────┘\033[0m"
-
-echo -e "\n\033[1;31m  ⚡ IMPORTANT — If 'wifux' shows:\033[0m"
-echo -e "\033[1;37m     \"no superuser binary detected\"\033[0m"
-echo -e "\033[1;33m  → First try:   \033[1;37mwifux fix\033[0m"
-echo -e "\033[1;33m  → Still broken? Visit this link for 3 fix methods:\033[0m"
-echo -e "\033[1;36m    https://github.com/Mawa4k/WiFuX033[0m"
-echo -e "\033[1;33m  → Copy or screenshot that link right now!\033[0m"
-
 echo -e "\n\033[1;36m══════════════════════════════════════════════\033[0m"
 echo -e "\033[1;32m  ✅ All done! Type 'wifux' to get started.\033[0m"
 echo -e "\033[1;36m══════════════════════════════════════════════\033[0m\n"
