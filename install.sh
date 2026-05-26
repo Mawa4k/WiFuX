@@ -21,100 +21,87 @@ cat > "$WIFUX_BIN" <<EOF
 #!/data/data/com.termux/files/usr/bin/bash
 cd "$SCRIPT_DIR" || exit
 
-# লুপ ট্রিক: পাইথন পুরোপুরি চালু হওয়ার পর আপনার ব্যানারটি ওভাররাইট করবে
-show_my_banner() {
-    local pid=\$1
-    while kill -0 \$pid 2>/dev/null; do
-        sleep 2.0
-        clear
-        echo -e "\033[1;32m _    _  _____ ______ _    _ __   __"
-        echo -e "| |  | ||_   _|  ____| |  | |\ \ / /"
-        echo -e "| |  | |  | | | |__  | |  | | \ V / "
-        echo -e "| |  | |  | | |  __| | |  | |  > <  "
-        echo -e "| |__| | _| |_| |    | |__| | / . \ "
-        echo -e " \____/ |_____|_|     \____/ /_/ \_\\\\\033[0m"
-        echo -e "\033[1;33m-----------------------------------------\033[0m"
-        echo -e " ✦ \033[1;36mAuthor   :\033[0m MD MAWA ISLAM"
-        echo -e " ✦ \033[1;36mGitHub   :\033[0m Mawa4k"
-        echo -e " ✦ \033[1;36mFacebook :\033[0m https://www.facebook.com/mawa4k"
-        echo -e " ✦ \033[1;36mWebsite  :\033[0m https://msrmawa.pro.bd"
-        echo -e "\033[1;33m-----------------------------------------\033[0m"
-        echo -e " \033[1;35m★ Version\033[0m : \033[1;32mv2.0 [Target Mode]\033[0m"
-        echo ""
-        echo -e " [\033[1;31m!\033[0m] Update: Type \033[1;32mwifux update\033[0m in terminal"
-        echo -e "\033[1;34m-----------------------------------------\033[0m"
-        break
-    done
-}
+# একটি ওয়াচডগ পাইথন স্ক্রিপ্ট তৈরি করা যা পুরোনো ব্যানার মুছে আপনার নাম বসাবে
+cat << 'PYEOF' > .watchdog.py
+import os
+import sys
+import time
+import threading
 
-# Update Logic
+def ThreadBranding():
+    # পাইথন মেইন ফাইল লোড হয়ে স্ক্রিন ক্লিয়ার করার জন্য ১ সেকেন্ড অপেক্ষা করবে
+    time.sleep(1.0)
+    os.system("clear")
+    print("\033[1;32m _    _  _____ ______ _    _ __   __")
+    print("| |  | ||_   _|  ____| |  | |\ \ / /")
+    print("| |  | |  | | | |__  | |  | | \ V / ")
+    print("| |  | |  | | |  __| | |  | |  > <  ")
+    print("| |__| | _| |_| |    | |__| | / . \ ")
+    print(" \____/ |_____|_|     \____/ /_/ \_\\\\\033[0m")
+    print("\033[1;33m-----------------------------------------\033[0m")
+    print(" ✦ \033[1;36mAuthor   :\033[0m MD MAWA ISLAM")
+    print(" ✦ \033[1;36mGitHub   :\033[0m Mawa4k")
+    print(" ✦ \033[1;36mFacebook :\033[0m https://www.facebook.com/mawa4k")
+    print(" ✦ \033[1;36mWebsite  :\033[0m https://msrmawa.pro.bd")
+    print("\033[1;33m-----------------------------------------\033[0m")
+    print(" \033[1;35m★ Version\033[0m : \033[1;32mv2.0 [Target Mode]\033[0m")
+    print("")
+    print(" [\033[1;31m!\033[0m] Update: Type \033[1;32mwifux update\033[0m in terminal")
+    print("\033[1;34m-----------------------------------------\033[0m")
+
+# থ্রেড চালু করে দেওয়া যেন ব্যাকগ্রাউন্ডে ওয়াচডগ কাজ করে
+branding_thread = threading.Thread(target=ThreadBranding)
+branding_thread.daemon = True
+branding_thread.start()
+
+# এবার মূল অবfাসকেটেড ফাইলটিকে ফ্রন্টগ্রাউন্ডে রুট হিসেবে রান করা
+args = " ".join(sys.argv[1:])
+os.system(f"tsu python main.py {args}")
+PYEOF
+
+# মূল কমান্ড এক্সিকিউশন লজিক
 if [ "\$1" == "update" ]; then
     echo -e "\033[1;32m[+] Fetching latest updates from Mawa4k's GitHub...\033[0m"
     git reset --hard HEAD > /dev/null 2>&1
     git pull origin main
-
-    echo -e "\033[1;32m[+] Checking for new requirements...\033[0m"
     pip install -r requirements.txt --break-system-packages > /dev/null 2>&1
-
     chmod +x main.py
-
-    echo -e "\033[1;32m[+] Re-applying wifux command setup...\033[0m"
     bash install.sh > /dev/null 2>&1
-
     echo -e "\033[1;32m[✓] WiFuX updated successfully!\033[0m"
     exit 0
 fi
 
-# Help Logic
 if [ "\$1" == "help" ]; then
     python help.py
     exit 0
 fi
 
-# Fix Logic
 if [ "\$1" == "fix" ]; then
     bash fix.sh
     exit 0
 fi
 
-# Contact Logic
 if [ "\$1" == "contact" ]; then
     python contact.py
     exit 0
 fi
 
-# Menu Logic
 if [ "\$1" == "menu" ]; then
-    tsu python main.py &
-    PY_PID=\$!
-    show_my_banner \$PY_PID
-    wait \$PY_PID
+    python .watchdog.py
     exit 0
 fi
 
-# Old Logic
 if [ "\$1" == "old" ]; then
-    tsu python w1.py -i wlan0 -K &
-    PY_PID=\$!
-    show_my_banner \$PY_PID
-    wait \$PY_PID
+    tsu python w1.py -i wlan0 -K
     exit 0
 fi
 
-# Run Logic
 if [ -z "\$1" ]; then
-    tsu python main.py -i wlan0 -K &
-    PY_PID=\$!
-    show_my_banner \$PY_PID
-    wait \$PY_PID
+    python .watchdog.py -i wlan0 -K
 else
-    tsu python main.py "\$@" &
-    PY_PID=\$!
-    show_my_banner \$PY_PID
-    wait \$PY_PID
+    python .watchdog.py "\$@"
 fi
 EOF
 
 chmod +x "$WIFUX_BIN"
-
-echo -e "\n${GREEN}[✓] Local setup complete!${RESET}"
+echo -e "\n${GREEN}[✓] Local setup complete! Type 'wifux' to start.${RESET}"
