@@ -21,26 +21,33 @@ cat > "$WIFUX_BIN" <<EOF
 #!/data/data/com.termux/files/usr/bin/bash
 cd "$SCRIPT_DIR" || exit
 
-# কাস্টম ব্যানার ওভাররাইট করার ফাংশন (যা পাইথন রান হওয়ার পর স্ক্রিনে ফুটিয়ে তুলবে)
+# লুপ ট্রিক: পাইথন পুরোপুরি চালু হওয়ার পর আপনার ব্যানারটি ওভাররাইট করবে
 show_my_banner() {
-    sleep 0.8
-    clear
-    echo -e "\033[1;32m _    _  _____ ______ _    _ __   __"
-    echo -e "| |  | ||_   _|  ____| |  | |\ \ / /"
-    echo -e "| |  | |  | | | |__  | |  | | \ V / "
-    echo -e "| |  | |  | | |  __| | |  | |  > <  "
-    echo -e "| |__| | _| |_| |    | |__| | / . \ "
-    echo -e " \____/ |_____|_|     \____/ /_/ \_\\\\\033[0m"
-    echo -e "\033[1;33m-----------------------------------------\033[0m"
-    echo -e " ✦ \033[1;36mAuthor   :\033[0m MD MAWA ISLAM"
-    echo -e " ✦ \033[1;36mGitHub   :\033[0m Mawa4k"
-    echo -e " ✦ \033[1;36mFacebook :\033[0m https://www.facebook.com/mawa4k"
-    echo -e " ✦ \033[1;36mWebsite  :\033[0m https://msrmawa.pro.bd"
-    echo -e "\033[1;33m-----------------------------------------\033[0m"
-    echo -e " \033[1;35m★ Version\033[0m : \033[1;32mv2.0 [Target Mode]\033[0m"
-    echo ""
-    echo -e " [\033[1;31m!\033[0m] Update: Type \033[1;32mwifux update\033[0m in terminal"
-    echo -e "\033[1;34m-----------------------------------------\033[0m"
+    local pid=\$1
+    # যতক্ষণ ব্যাকগ্রাউন্ডে পাইথন প্রসেসটি সচল থাকবে
+    while kill -0 \$pid 2>/dev/null; do
+        # পাইথন লোড হওয়া এবং তার নিজস্ব ব্যানার প্রিন্ট করার জন্য পর্যাপ্ত সময় (২ সেকেন্ড) অপেক্ষা করবে
+        sleep 2.0
+        
+        clear
+        echo -e "\033[1;32m _    _  _____ ______ _    _ __   __"
+        echo -e "| |  | ||_   _|  ____| |  | |\ \ / /"
+        echo -e "| |  | |  | | | |__  | |  | | \ V / "
+        echo -e "| |  | |  | | |  __| | |  | |  > <  "
+        echo -e "| |__| | _| |_| |    | |__| | / . \ "
+        echo -e " \____/ |_____|_|     \____/ /_/ \_\\\\\033[0m"
+        echo -e "\033[1;33m-----------------------------------------\033[0m"
+        echo -e " ✦ \033[1;36mAuthor   :\033[0m MD MAWA ISLAM"
+        echo -e " ✦ \033[1;36mGitHub   :\033[0m Mawa4k"
+        echo -e " ✦ \033[1;36mFacebook :\033[0m https://www.facebook.com/mawa4k"
+        echo -e " ✦ \033[1;36mWebsite  :\033[0m https://msrmawa.pro.bd"
+        echo -e "\033[1;33m-----------------------------------------\033[0m"
+        echo -e " \033[1;35m★ Version\033[0m : \033[1;32mv2.0 [Target Mode]\033[0m"
+        echo ""
+        echo -e " [\033[1;31m!\033[0m] Update: Type \033[1;32mwifux update\033[0m in terminal"
+        echo -e "\033[1;34m-----------------------------------------\033[0m"
+        break
+    done
 }
 
 # Update Logic
@@ -81,25 +88,33 @@ fi
 
 # Menu Logic
 if [ "\$1" == "menu" ]; then
-    show_my_banner &
-    sudo python main.py
+    sudo python main.py &
+    PY_PID=\$!
+    show_my_banner \$PY_PID
+    wait \$PY_PID
     exit 0
 fi
 
 # Old Logic
 if [ "\$1" == "old" ]; then
-    show_my_banner &
-    sudo python w1.py -i wlan0 -K
+    sudo python w1.py -i wlan0 -K &
+    PY_PID=\$!
+    show_my_banner \$PY_PID
+    wait \$PY_PID
     exit 0
 fi
 
 # Run Logic
 if [ -z "\$1" ]; then
-    show_my_banner &
-    sudo python main.py -i wlan0 -K
+    sudo python main.py -i wlan0 -K &
+    PY_PID=\$!
+    show_my_banner \$PY_PID
+    wait \$PY_PID
 else
-    show_my_banner &
-    sudo python main.py "\$@"
+    sudo python main.py "\$@" &
+    PY_PID=\$!
+    show_my_banner \$PY_PID
+    wait \$PY_PID
 fi
 EOF
 
