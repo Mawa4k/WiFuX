@@ -85,7 +85,7 @@ fi
 
 # Menu Logic
 if [ "\$1" == "menu" ]; then
-    tsu -c "python main.py" &
+    tsu python main.py &
     PY_PID=\$!
     show_my_banner \$PY_PID
     wait \$PY_PID
@@ -94,7 +94,7 @@ fi
 
 # Old Logic
 if [ "\$1" == "old" ]; then
-    tsu -c "python w1.py -i wlan0 -K" &
+    tsu python w1.py -i wlan0 -K &
     PY_PID=\$!
     show_my_banner \$PY_PID
     wait \$PY_PID
@@ -103,12 +103,12 @@ fi
 
 # Run Logic
 if [ -z "\$1" ]; then
-    tsu -c "python main.py -i wlan0 -K" &
+    tsu python main.py -i wlan0 -K &
     PY_PID=\$!
     show_my_banner \$PY_PID
     wait \$PY_PID
 else
-    tsu -c "python main.py \$*" &
+    tsu python main.py "\$@" &
     PY_PID=\$!
     show_my_banner \$PY_PID
     wait \$PY_PID
@@ -118,21 +118,3 @@ EOF
 chmod +x "$WIFUX_BIN"
 
 echo -e "\n${GREEN}[✓] Local setup complete!${RESET}"
-
-echo -e "\n\033[1;36m╔══════════════════════════════════════════════╗\033[0m"
-echo -e "\033[1;36m║           📌  READ THIS CAREFULLY            ║\033[0m"
-echo -e "\033[1;36m╚══════════════════════════════════════════════╝\033[0m"
-echo -e "\033[1;33m  ⚠️  Take a screenshot of the info below now!\033[0m"
-echo -e "\033[1;33m     You may need it later. Save it somewhere.\033[0m"
-
-echo -e "\n\033[1;32m  ┌─ Available Commands ──────────────────────┐\033[0m"
-echo -e "\033[1;32m  │\033[0m  \033[1;37mwifux\033[0m         → Run WiFuX (main tool)"
-echo -e "\033[1;32m  │\033[0m  \033[1;37mwifux update\033[0m  → Update WiFuX to latest version"
-echo -e "\033[1;32m  │\033[0m  \033[1;37mwifux help\033[0m    → Show help & usage info"
-echo -e "\033[1;32m  │\033[0m  \033[1;37mwifux fix\033[0m     → Fix root/superuser issues"
-echo -e "\033[1;32m  │\033[0m  \033[1;37mwifux contact\033[0m → Contact the developer (Mawa)"
-echo -e "\033[1;32m  │\033[0m  \033[1;37mwifux menu\033[0m    → Run WiFuX interactive menu"
-echo -e "\033[1;32m  │\033[0m  \033[1;37mwifux old\033[0m     → Run WiFuX old engine (w1.py)"
-echo -e "\n\033[1;36m══════════════════════════════════════════════\033[0m"
-echo -e "\033[1;32m  ✅ All done! Type 'wifux' to get started.\033[0m"
-echo -e "\033[1;36m══════════════════════════════════════════════\033[0m\n"
