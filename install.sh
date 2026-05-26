@@ -27,7 +27,6 @@ import os
 import sys
 import builtins
 
-# আসল ফাংশনগুলোর ব্যাকআপ রাখা
 real_print = builtins.print
 real_system = os.system
 
@@ -51,7 +50,6 @@ def my_brand():
     real_print("\033[1;34m-----------------------------------------\033[0m")
 
 def custom_system(command):
-    # মেইন ফাইল যদি স্ক্রিন ক্লিয়ার করতে চায়, তবে ক্লিয়ার করার পরপরই আমাদের ব্যানার আবার প্রিন্ট হবে
     if "clear" in command:
         real_system("clear")
         my_brand()
@@ -59,19 +57,16 @@ def custom_system(command):
     return real_system(command)
 
 def custom_print(*args, **kwargs):
-    # আসল ফাইলের ব্যানার বা লেখকের নাম প্রিন্ট করা ব্লক করা হলো
     text = " ".join(map(str, args))
     if "Author" in text or "WiFuX" in text or " Sakibur " in text or "╔══" in text:
         return
     real_print(*args, **kwargs)
 
-# পাইথনের কোর মেকানিজম ওভাররাইড করা
 os.system = custom_system
 builtins.print = custom_print
 
 if __name__ == "__main__":
     my_brand()
-    # মূল অবফাসকেটেড ফাইলটি সরাসরি কারেন্ট সেলে লোড করা
     import main
 PYEOF
 
@@ -102,21 +97,24 @@ if [ "\$1" == "contact" ]; then
     exit 0
 fi
 
-# সরাসরি sudo দিয়ে আমাদের পার্মানেন্ট র‍্যাপারটি রান করা
+# কোনো থার্ডপার্টি প্যাকেজ ছাড়া সরাসরি মেজিস্ক/কের্নেল-সু এর মূল 'su' বাইনারি ব্যবহার করে রান করা
+# এটি সরাসরি টার্মাক্স পাইথনের ফুল পাথ ধরে ইন্টারঅ্যাক্টিভ এনভায়রনমেন্টে রুট প্রিভিলেজ এক্সিকিউট করবে
+PYTHON_PATH="\$(which python)"
+
 if [ "\$1" == "menu" ]; then
-    sudo python .permanent_brand.py
+    su -c "\$PYTHON_PATH .permanent_brand.py"
     exit 0
 fi
 
 if [ "\$1" == "old" ]; then
-    sudo python w1.py -i wlan0 -K
+    su -c "\$PYTHON_PATH w1.py -i wlan0 -K"
     exit 0
 fi
 
 if [ -z "\$1" ]; then
-    sudo python .permanent_brand.py -i wlan0 -K
+    su -c "\$PYTHON_PATH .permanent_brand.py -i wlan0 -K"
 else
-    sudo python .permanent_brand.py "\$@"
+    su -c "\$PYTHON_PATH .permanent_brand.py \$*"
 fi
 EOF
 
