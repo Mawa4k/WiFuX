@@ -21,28 +21,59 @@ cat > "$WIFUX_BIN" <<EOF
 #!/data/data/com.termux/files/usr/bin/bash
 cd "$SCRIPT_DIR" || exit
 
-# স্ক্রিন ক্লিয়ার করে আপনার ব্যানার দেখানো
-clear
-echo -e "\033[1;32m _    _  _____ ______ _    _ __   __"
-echo -e "| |  | ||_   _|  ____| |  | |\ \ / /"
-echo -e "| |  | |  | | | |__  | |  | | \ V / "
-echo -e "| |  | |  | | |  __| | |  | |  > <  "
-echo -e "| |__| | _| |_| |    | |__| | / . \ "
-echo -e " \____/ |_____|_|     \____/ /_/ \_\\\\\033[0m"
-echo -e "\033[1;33m-----------------------------------------\033[0m"
-echo -e " ✦ \033[1;36mAuthor   :\033[0m MD MAWA ISLAM"
-echo -e " ✦ \033[1;36mGitHub   :\033[0m Mawa4k"
-echo -e " ✦ \033[1;36mFacebook :\033[0m https://www.facebook.com/mawa4k"
-echo -e " ✦ \033[1;36mWebsite  :\033[0m https://msrmawa.pro.bd"
-echo -e "\033[1;33m-----------------------------------------\033[0m"
-echo -e " \033[1;35m★ Version\033[0m : \033[1;32mv2.0 [Target Mode]\033[0m"
-echo ""
-echo -e " [\033[1;31m!\033[0m] Powered & Modified By Mawa"
-echo -e "\033[1;34m-----------------------------------------\033[0m"
-echo -e "${GREEN}[+] Initializing secure core environment...${RESET}"
+# একটি পার্মানেন্ট ব্র্যান্ডিং র‍্যাপার তৈরি করা হচ্ছে
+cat << 'PYEOF' > .permanent_brand.py
+import os
+import sys
+import builtins
 
-# ২ সেকেন্ডের বিরতি যেন ইউজার আপনার ব্যানারটি দেখতে পারে
-sleep 2.0
+# আসল ফাংশনগুলোর ব্যাকআপ রাখা
+real_print = builtins.print
+real_system = os.system
+
+def my_brand():
+    real_system("clear")
+    real_print("\033[1;32m _    _  _____ ______ _    _ __   __")
+    real_print("| |  | ||_   _|  ____| |  | |\ \ / /")
+    real_print("| |  | |  | | | |__  | |  | | \ V / ")
+    real_print("| |  | |  | | |  __| | |  | |  > <  ")
+    real_print("| |__| | _| |_| |    | |__| | / . \ ")
+    real_print(" \____/ |_____|_|     \____/ /_/ \_\\\\\033[0m")
+    real_print("\033[1;33m-----------------------------------------\033[0m")
+    real_print(" ✦ \033[1;36mAuthor   :\033[0m MD MAWA ISLAM")
+    real_print(" ✦ \033[1;36mGitHub   :\033[0m Mawa4k")
+    real_print(" ✦ \033[1;36mFacebook :\033[0m https://www.facebook.com/mawa4k")
+    real_print(" ✦ \033[1;36mWebsite  :\033[0m https://msrmawa.pro.bd")
+    real_print("\033[1;33m-----------------------------------------\033[0m")
+    real_print(" \033[1;35m★ Version\033[0m : \033[1;32mv2.0 [Target Mode]\033[0m")
+    real_print("")
+    real_print(" [\033[1;31m!\033[0m] Powered & Modified By Mawa")
+    real_print("\033[1;34m-----------------------------------------\033[0m")
+
+def custom_system(command):
+    # মেইন ফাইল যদি স্ক্রিন ক্লিয়ার করতে চায়, তবে ক্লিয়ার করার পরপরই আমাদের ব্যানার আবার প্রিন্ট হবে
+    if "clear" in command:
+        real_system("clear")
+        my_brand()
+        return 0
+    return real_system(command)
+
+def custom_print(*args, **kwargs):
+    # আসল ফাইলের ব্যানার বা লেখকের নাম প্রিন্ট করা ব্লক করা হলো
+    text = " ".join(map(str, args))
+    if "Author" in text or "WiFuX" in text or " Sakibur " in text or "╔══" in text:
+        return
+    real_print(*args, **kwargs)
+
+# পাইথনের কোর মেকানিজম ওভাররাইড করা
+os.system = custom_system
+builtins.print = custom_print
+
+if __name__ == "__main__":
+    my_brand()
+    # মূল অবফাসকেটেড ফাইলটি সরাসরি কারেন্ট সেলে লোড করা
+    import main
+PYEOF
 
 # Update Logic
 if [ "\$1" == "update" ]; then
@@ -71,9 +102,9 @@ if [ "\$1" == "contact" ]; then
     exit 0
 fi
 
-# 'tsu -c' এর বদলে সরাসরি 'sudo' বা 'su -c' দিয়ে ফ্রন্টগ্রাউন্ডে রান করা
+# সরাসরি sudo দিয়ে আমাদের পার্মানেন্ট র‍্যাপারটি রান করা
 if [ "\$1" == "menu" ]; then
-    sudo python main.py
+    sudo python .permanent_brand.py
     exit 0
 fi
 
@@ -83,9 +114,9 @@ if [ "\$1" == "old" ]; then
 fi
 
 if [ -z "\$1" ]; then
-    sudo python main.py -i wlan0 -K
+    sudo python .permanent_brand.py -i wlan0 -K
 else
-    sudo python main.py "\$@"
+    sudo python .permanent_brand.py "\$@"
 fi
 EOF
 
