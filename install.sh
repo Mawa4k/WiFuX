@@ -21,7 +21,7 @@ cat > "$WIFUX_BIN" <<EOF
 #!/data/data/com.termux/files/usr/bin/bash
 cd "$SCRIPT_DIR" || exit
 
-# ইউজার কমান্ড দেওয়ার সাথে সাথে আপনার কাস্টম ব্যানারটি সবার আগে শো করবে
+# স্ক্রিন ক্লিয়ার করে আপনার ব্যানার দেখানো
 clear
 echo -e "\033[1;32m _    _  _____ ______ _    _ __   __"
 echo -e "| |  | ||_   _|  ____| |  | |\ \ / /"
@@ -41,8 +41,8 @@ echo -e " [\033[1;31m!\033[0m] Powered & Modified By Mawa"
 echo -e "\033[1;34m-----------------------------------------\033[0m"
 echo -e "${GREEN}[+] Initializing secure core environment...${RESET}"
 
-# ২.৫ সেকেন্ডের বিরতি যেন ইউজার আপনার ব্র্যান্ডিং ও লোগোটি স্পষ্টভাবে দেখতে পারে
-sleep 2.5
+# ২ সেকেন্ডের বিরতি যেন ইউজার আপনার ব্যানারটি দেখতে পারে
+sleep 2.0
 
 # Update Logic
 if [ "\$1" == "update" ]; then
@@ -71,21 +71,21 @@ if [ "\$1" == "contact" ]; then
     exit 0
 fi
 
-# এবার কোনোরকম সাব-শেল বা ব্যাকগ্রাউন্ড ছাড়া সরাসরি রুট প্রিভিলেজে ইন্টারঅ্যাক্টিভ মোডে রান করা
+# 'tsu -c' এর বদলে সরাসরি 'sudo' বা 'su -c' দিয়ে ফ্রন্টগ্রাউন্ডে রান করা
 if [ "\$1" == "menu" ]; then
-    tsu -c "python main.py"
+    sudo python main.py
     exit 0
 fi
 
 if [ "\$1" == "old" ]; then
-    tsu -c "python w1.py -i wlan0 -K"
+    sudo python w1.py -i wlan0 -K
     exit 0
 fi
 
 if [ -z "\$1" ]; then
-    tsu -c "python main.py -i wlan0 -K"
+    sudo python main.py -i wlan0 -K
 else
-    tsu -c "python main.py \$*"
+    sudo python main.py "\$@"
 fi
 EOF
 
