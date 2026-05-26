@@ -13,7 +13,7 @@ chmod +x main.py
 
 echo -e "${GREEN}[+] Setting up 'wifux' command...${RESET}"
 
-BIN_DIR="$PREFIX/bin"
+BIN_DIR="/data/data/com.termux/files/usr/bin"
 WIFUX_BIN="$BIN_DIR/wifux"
 SCRIPT_DIR="$(pwd)"
 
@@ -21,7 +21,7 @@ cat > "$WIFUX_BIN" <<EOF
 #!/data/data/com.termux/files/usr/bin/bash
 cd "$SCRIPT_DIR" || exit
 
-# একটি পার্মানেন্ট ব্র্যান্ডিং র‍্যাপার তৈরি করা হচ্ছে
+# পার্মানেন্ট ব্র্যান্ডিং র‍্যাপার তৈরি করা হচ্ছে
 cat << 'PYEOF' > .permanent_brand.py
 import os
 import sys
@@ -83,7 +83,7 @@ if [ "\$1" == "update" ]; then
 fi
 
 if [ "\$1" == "help" ]; then
-    python help.py
+    /data/data/com.termux/files/usr/bin/python help.py
     exit 0
 fi
 
@@ -93,28 +93,26 @@ if [ "\$1" == "fix" ]; then
 fi
 
 if [ "\$1" == "contact" ]; then
-    python contact.py
+    /data/data/com.termux/files/usr/bin/python contact.py
     exit 0
 fi
 
-# কোনো থার্ডপার্টি প্যাকেজ ছাড়া সরাসরি মেজিস্ক/কের্নেল-সু এর মূল 'su' বাইনারি ব্যবহার করে রান করা
-# এটি সরাসরি টার্মাক্স পাইথনের ফুল পাথ ধরে ইন্টারঅ্যাক্টিভ এনভায়রনমেন্টে রুট প্রিভিলেজ এক্সিকিউট করবে
-PYTHON_PATH="\$(which python)"
-
+# এবার ডিরেক্টরি লক এবং পাইথনের ফুল পাথ একদম ফিক্সড করে su -c কল করা
+# যাতে রুট এনভায়রনমেন্ট থেকে পাথ হারানোর কোনো সুযোগই না থাকে
 if [ "\$1" == "menu" ]; then
-    su -c "\$PYTHON_PATH .permanent_brand.py"
+    su -c "cd $SCRIPT_DIR && /data/data/com.termux/files/usr/bin/python .permanent_brand.py"
     exit 0
 fi
 
 if [ "\$1" == "old" ]; then
-    su -c "\$PYTHON_PATH w1.py -i wlan0 -K"
+    su -c "cd $SCRIPT_DIR && /data/data/com.termux/files/usr/bin/python w1.py -i wlan0 -K"
     exit 0
 fi
 
 if [ -z "\$1" ]; then
-    su -c "\$PYTHON_PATH .permanent_brand.py -i wlan0 -K"
+    su -c "cd $SCRIPT_DIR && /data/data/com.termux/files/usr/bin/python .permanent_brand.py -i wlan0 -K"
 else
-    su -c "\$PYTHON_PATH .permanent_brand.py \$*"
+    su -c "cd $SCRIPT_DIR && /data/data/com.termux/files/usr/bin/python .permanent_brand.py \$*"
 fi
 EOF
 
